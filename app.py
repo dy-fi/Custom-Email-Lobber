@@ -2,11 +2,27 @@ from flask import Flask, render_template, request
 from flaskwebgui import FlaskUI
 import csv
 import codecs
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.auth.transport.requests import Request
 
 # files import
 from start import start
 
-app = Flask(__name__)
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)   
+
+# freezing
+if getattr(sys, 'frozen', False):
+    template_folder =resource_path('templates')
+    static_folder = resource_path('static')
+    app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
+else:
+    app = Flask(__name__)
+
+
 ui = FlaskUI(app)
 app._static_folder = './static'
 
