@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+from 
 import csv
 import codecs
 
@@ -6,6 +7,8 @@ import codecs
 from start import start
 
 app = Flask(__name__)
+app._static_folder = './static'
+
 
 def parseCSV(csv_file):
     """
@@ -13,11 +16,14 @@ def parseCSV(csv_file):
     """
     result = []
     batch_reader = csv.DictReader(csv_file, dialect=csv.excel)
-    try:
-        for row in batch_reader:
+
+    for row in batch_reader:
+        print(row)
+        try:
             result.append( (row['Name'], row['Email']) )
-    except:
-        for row in batch_reader:
+        # hacky workaround to re-encoding csv
+        # recognizes unparsed file start
+        except KeyError:
             result.append( (row['\ufeffName'], row['Email']) )
             
     return result
@@ -40,7 +46,8 @@ def index():
             attachments = request.files["attachments"]
 
         names_dict = parseCSV(stream)
-        # start(names_dict, message, subject, attachments)
+        print(names_dict)
+        start(names_dict, message, subject, attachments)
         return render_template("success.html")
         
     
