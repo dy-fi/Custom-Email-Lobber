@@ -8,25 +8,13 @@ from google.auth.transport.requests import Request
 
 # files import
 from start import start
-
-def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
-    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
-    return os.path.join(base_path, relative_path)   
-
-# freezing
-if getattr(sys, 'frozen', False):
-    template_folder =resource_path('templates')
-    static_folder = resource_path('static')
-    app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
-else:
-    app = Flask(__name__)
-
-
+# app init
+app = Flask(__name__)
 ui = FlaskUI(app)
+# static
 app._static_folder = './static'
 
-
+# HELPERS
 def parseCSV(csv_file):
     """
         Parse csv file and return a list of tuples with (name, email)
@@ -45,6 +33,8 @@ def parseCSV(csv_file):
             
     return result
 
+
+# ROUTES
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == "GET":
@@ -68,6 +58,7 @@ def index():
         return render_template("success.html")
         
     
+# DRIVER
 if __name__ == '__main__':
     # app.run(host="0.0.0.0", port="8000", debug=True)
     ui.run()
