@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 id='banner-title'>Named Email Sender</h1>
+<form method='POST' action='/' id='form-wrapper' enctype="multipart/form-data">
+    
+    <div class='form-group'>
+        <div class='file-wrapper'>
+            <div id='name-wrapper'>
+                <label for='names'>Names CSV</label>
+                <input class='form-control' type='file' name='names' required>
+            </div>
+            <div id='attachment-wrapper'>
+                <label for="attachments">Attachments</label>
+                <input class='form-control' type='file' name='attachments' multiple>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class='form-group'>
+        <label for="subject">Subject</label>
+        <input class='form-control' type='text' name='subject'>
+    </div>
+
+    <div class='form-group'>
+        <label for="message">Message</label>
+        <br>
+        <small>Use /NAME/ where you want each recipient's name to go (in the subject line too!)</small>
+        <textarea class='form-control' name="message" row="20" ></textarea>
+    </div>
+    <hr>
+    <div class='form-group' id='send-button'>
+        <button class='btn btn-primary btn-block' type='submit'>Send!</button>
+    </div>
+</form>
+{% endblock %}

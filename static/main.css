@@ -1,0 +1,52 @@
+.file-wrapper {
+    background-color: green;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+}
+
+#form-wrapper {
+    padding-right: 10%;
+    padding-left: 10%;
+    margin-top: 20%;
+    color: green;
+    background-color: lightblue;
+    border: solid grey 2px;
+}
+
+#name-wrapper {
+    top: 19%;
+    position: absolute;
+    left: 21%;
+}
+
+#attachment-wrapper {
+    top: 19%;
+    position: absolute;
+    right: 21%;
+}
+
+#send-button {
+    padding-right: 20%;
+    padding-left: 20%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+
+#banner-title {
+    position: absolute;
+    top: 3%;
+    right: 40%;
+}
+
+#success-image {
+    height: 400px;
+    width: 400px;
+    margin-left: 30%;
+    margin-top: 15%;
+}
+
+#success-message {
+    margin-left: 42%;
+    margin-top: 2%;
+}
