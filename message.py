@@ -1,7 +1,6 @@
 from email.mime.text import MIMEText
 import base64
 
-# EMAIL = 'Hayley@rocksf.org'
 EMAIL = 'dylanfinn89@gmail.com'
 def format_message(name, message_text):
     """
