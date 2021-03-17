@@ -1,4 +1,7 @@
 from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import mimetypes
+import codecs
 import base64
 
 EMAIL = 'dylanfinn89@gmail.com'
@@ -13,7 +16,7 @@ def format_message(name, message_text):
     copy = message_text
     # replace all instances
     formatted = copy.replace("/NAME/", name)
-    print('formatted copy: ' + formatted)
+    print('\nformatted copy: ' + formatted)
     return formatted
 
 def create_message(to, subject, message_text):
@@ -23,7 +26,7 @@ def create_message(to, subject, message_text):
     Returns:
     An object containing a base64url encoded email object.
     """
-    message = MIMEText(message_text)
+    message = MIMEText(message_text, 'html')
     message['to'] = to
     message['from'] = EMAIL
     message['subject'] = subject
@@ -49,31 +52,28 @@ def create_message_with_attachment(to, subject, message_text, file):
 
     msg = MIMEText(message_text)
     message.attach(msg)
+    fp = file
 
-    content_type, encoding = mimetypes.guess_type(file)
+    content_type, encoding = mimetypes.guess_type(fp.filename)
 
     if content_type is None or encoding is not None:
       content_type = 'application/octet-stream'
-      main_type, sub_type = content_type.split('/', 1)
-    if main_type == 'text':
-      fp = open(file, 'rb')
-      msg = MIMEText(fp.read(), _subtype=sub_type)
-      fp.close()
-    elif main_type == 'image':
-      fp = open(file, 'rb')
-      msg = MIMEImage(fp.read(), _subtype=sub_type)
-      fp.close()
-    elif main_type == 'audio':
-      fp = open(file, 'rb')
-      msg = MIMEAudio(fp.read(), _subtype=sub_type)
-      fp.close()
-    else:
-      fp = open(file, 'rb')
-      msg = MIMEBase(main_type, sub_type)
-      msg.set_payload(fp.read())
-      fp.close()
 
-    filename = os.path.basename(file)
+    fr = fp.read()
+    main_type, sub_type = content_type.split('/', 1)
+
+    if main_type == 'text':
+      msg = MIMEText(fr.decode(), _subtype=sub_type)
+    elif main_type == 'image':
+      msg = MIMEImage(fr, _subtype=sub_type)
+    elif main_type == 'audio':
+      msg = MIMEAudio(fr, _subtype=sub_type)
+    else:
+      msg = MIMEBase(main_type, sub_type)
+      msg.set_payload(fr)
+
+
+    filename = fp.filename
     msg.add_header('Content-Disposition', 'attachment', filename=filename)
     message.attach(msg)
     raw = base64.urlsafe_b64encode(message.as_bytes())

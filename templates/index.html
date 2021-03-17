@@ -32,10 +32,11 @@
         <br>
         <small>Use /NAME/ where you want each recipient's name to go (in the subject line too!)</small>
         <div id='editor'></div>
+        <textarea style="display:none;" id='hidden-textarea' name='message'></textarea>
     </div>
     <hr>
     <div class='form-group' id='send-button'>
-        <button class='btn btn-primary btn-block' type='submit'>Send!</button>
+        <button class='btn btn-primary btn-block' type='submit' id='send'>Send!</button>
     </div>
 </form>
 {% endblock %}
@@ -46,6 +47,11 @@
 <script>
     var quill = new Quill('#editor', {
       theme: 'snow'
+    });
+
+    document.getElementById("send-button").addEventListener("click", function(){
+        var myEditor = document.getElementById('editor');
+        document.getElementById('hidden-textarea').innerHTML = myEditor.children[0].innerHTML
     });
 </script>
 {% endblock %}

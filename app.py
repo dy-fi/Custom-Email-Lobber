@@ -23,7 +23,6 @@ def parseCSV(csv_file):
     batch_reader = csv.DictReader(csv_file, dialect=csv.excel)
 
     for row in batch_reader:
-        print(row)
         try:
             result.append( (row['Name'], row['Email']) )
         # hacky workaround to re-encoding csv
@@ -53,7 +52,6 @@ def index():
             attachments = request.files["attachments"]
 
         names_dict = parseCSV(stream)
-        print(names_dict)
         start(names_dict, message, subject, attachments)
         return render_template("success.html")
         

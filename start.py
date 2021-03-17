@@ -13,17 +13,23 @@ SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
 def send_messages(service, users, mes, subject, attachments=None):
     print(users)
-    for k, v in users:
-        f = m.format_message(k, mes)
-        s = m.format_message(k, subject)
+
+    for user in users:
+        f = m.format_message(user[0], mes)
+        s = m.format_message(user[0], subject)
         if attachments:
-            formed_message = m.create_message_with_attachment(v, s, f, attachments)
-            print("sending to: " + k)
+            formed_message = m.create_message_with_attachment(user[1], s, f, attachments)
+            print("sending to: " + user[1])
+            print("attachment: " + attachments.filename)
             m.send_message(service, "me", formed_message)
         else:
-            formed_message = m.create_message(v, s, f)
-            print("sending to: " + k)
+            formed_message = m.create_message(user[1], s, f)
+            print("sending to: " + user[1])
             m.send_message(service, "me", formed_message)
+    
+    if attachments: attachments.close()
+    
+    
 
 def start(users, message, subject, attachments=None):
     """
