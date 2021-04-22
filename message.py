@@ -50,7 +50,7 @@ def create_message_with_attachment(to, subject, message_text, file):
     message['from'] = EMAIL
     message['subject'] = subject
 
-    msg = MIMEText(message_text)
+    msg = MIMEText(message_text, 'html')
     message.attach(msg)
     fp = file
 
